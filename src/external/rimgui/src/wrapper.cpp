@@ -306,6 +306,10 @@ extern "C" {
         return ImGui::IsItemClicked();
     }
 
+    bool IsItemHovered() {
+        return ImGui::IsItemHovered();
+    }
+
     bool IsAnyItemFocused() {
         return ImGui::IsAnyItemFocused();
     }

@@ -27,6 +27,7 @@ self = window.Create("Script Editor", function()
                 end
             end
         end
+        
 
         if imgui.BeginMenuBar() == 1 then
             if imgui.BeginMenu("File") == 1 then

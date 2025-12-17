@@ -1,5 +1,2 @@
 .git/
 .vscode/
-repo/
-
-src/external/rimgui/bin/librimgui.so
