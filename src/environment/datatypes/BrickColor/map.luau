@@ -1,0 +1,56 @@
+local Color3 = require("@Color3")
+
+local function Map(id, r, g, b)
+    return {
+        id = id,
+        r = r,
+        g = g,
+        b = b,
+        Color = Color3.fromRGB(r, g, b)
+    }
+end
+
+return {
+    ["White"] = Map(1, 242, 243, 243),
+    ["Grey"] = Map(2, 161, 165, 162),
+    ["Light yellow"] = Map(3, 249, 233, 153),
+    ["Brick yellow"] = Map(5, 215, 197, 154),
+    ["Light green (Mint)"] = Map(6, 194, 218, 184),
+    ["Light reddish violet"] = Map(9, 232, 186, 200),
+    ["Pastel Blue"] = Map(11, 128, 187, 219),
+    ["Light orange brown"] = Map(12, 203, 232, 66),
+    ["Nougat"] = Map(18, 204, 142, 105),
+    ["Bright red"] = Map(21, 196, 40, 28),
+    ["Med. reddish violet"] = Map(22, 196, 112, 160),
+    ["Bright blue"] = Map(23, 13, 105, 172),
+    ["Bright yellow"] = Map(24, 245, 205, 48),
+    ["Earth orange"] = Map(25, 98, 71, 50),
+    ["Black"] = Map(26, 27, 42, 53),
+    ["Dark grey"] = Map(27, 109, 110, 108),
+    ["Dark green"] = Map(28, 40, 127, 71),
+    ["Medium green"] = Map(29, 161, 196, 140),
+    ["Lig. Yellowich orange"] = Map(36, 243, 207, 155),
+    ["Bright green"] = Map(37, 	75, 151, 75),
+    ["Dark orange"] = Map(38, 160, 95, 53),
+    ["Light bluish violet"] = Map(39, 193, 202, 222),
+    ["Transparent"] = Map(40, 236, 236, 236),
+    ["Tr. Red"] = Map(41, 205, 84, 75),
+    ["Tr. Lg blue"] = Map(42, 193, 223, 240),
+    ["Tr. Blue"] = Map(43, 123, 182, 232),
+    ["Tr. Yellow"] = Map(44, 247, 241, 141),
+    ["Light blue"] = Map(45, 180, 210, 228),
+    ["Tr. Flu. Reddish orange"] = Map(47, 217, 133, 108),
+    ["Tr. Green"] = Map(48, 132, 182, 141),
+    ["Tr. Flu. Green"] = Map(49, 248, 241, 132),
+    ["Phosph. White"] = Map(50, 236, 232, 222),
+    ["Light red"] = Map(100, 238, 196, 182),
+    ["Medium red"] = Map(101, 218, 134, 122),
+    ["Medium blue"] = Map(102, 	110, 153, 202),
+    ["Light grey"] = Map(103, 199, 193, 183),
+    ["Bright violet"] = Map(104, 107, 50, 124),
+    ["Br. yellowish orange"] = Map(105, 226, 155, 64),
+    ["Bright orange"] = Map(106, 218, 133, 65),
+    ["Bright bluish green"] = Map(107, 0, 143, 156),
+    ["Earth yellow"] = Map(108, 104, 92, 67),
+    ["Bright bluish violet"] = Map(110, 67, 84, 147),
+}
