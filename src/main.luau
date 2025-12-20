@@ -45,13 +45,13 @@ sandboxer.environment.print = function(...)
 	local args = {...}
 	local str = table.concat(args, "	")
 	engineState.game:GetService("LogService"):_AddLog(str, 0)
-	--print(...)
+	print(...)
 end
 sandboxer.environment.warn = function(...)
 	local args = {...}
 	local str = table.concat(args, "	")
 	engineState.game:GetService("LogService"):_AddLog(str, 2)
-	--print(...)
+	print(...)
 end
 sandboxer.environment.loadstring = function(...)
 	if not engineState.game:GetService("ServerScriptService").LoadStringEnabled then
