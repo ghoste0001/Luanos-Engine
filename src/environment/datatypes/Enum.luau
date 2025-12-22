@@ -214,6 +214,11 @@ local Enum = {
         MousePosition = 133
     },
 
+    LightingStyle = {
+        Realistic = 0,
+        Soft = 1,
+    },
+
     Material = {
         Plastic = 256,
         SmoothPlastic = 272,

@@ -2,5 +2,5 @@
 
 [window]
 fps = 360
-fps_unfocused = 10
+fps_unfocused = 20
 reduce_fps_on_unfocus = true

@@ -21,7 +21,7 @@ local function AddStyle(name: string, creator: string, url: string, callback: ()
 	})
 end
 
-AddStyle("Example Theme: Roblox Studio Dark", "Zalthen-dev", "https://github.com/Zalthen-dev/", function() 
+AddStyle("Roblox Studio Dark", "Zalthen-dev", "https://github.com/Zalthen-dev/", function() 
     local textColor = ColorRGB(225, 225, 225)
     local textColorDisabled = ColorRGB(85, 85, 85)
     local selectedTextBgColor = ColorRGB(11, 90, 175)
@@ -108,13 +108,6 @@ AddStyle("Example Theme: Roblox Studio Dark", "Zalthen-dev", "https://github.com
     imgui.SetStyleColor(imgui.IMGUI_COL_TABDIMMEDSELECTEDOVERLINE, bgColor)
 
     imgui.SetStyleRounding(0, 0, 0, 0, 0, 0, 0)
-end)
-
-AddStyle("Example Theme: Random Color", "Zalthen-dev", "https://github.com/Zalthen-dev/", function() 
-    for i = 1, imgui.IMGUI_COL_COUNT do
-        local color = ColorRGB(math.random(0, 255), math.random(0, 255), math.random(0, 255))
-        imgui.SetStyleColor(i, color)
-    end
 end)
 
 return styles

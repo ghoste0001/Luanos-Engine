@@ -142,4 +142,6 @@ self.Themes = {
 local defaultTheme = 1
 self.Theme = self.Themes[defaultTheme].Name
 
+
+self:SetVisibility(false)
 return self

@@ -19,6 +19,10 @@ function window.Create(drawFunc: (any) -> ())
 		utils.SetBoolPtr(self.visible, visible and 1 or 0)
 	end
 
+	function self:GetVisibility(): boolean
+		return utils.AsBool(utils.ValueFromBoolPtr(self.visible))
+	end
+
 	function self:Draw(...)
 		if utils.ValueFromBoolPtr(self.visible) == 1 then
 			drawFunc(...)

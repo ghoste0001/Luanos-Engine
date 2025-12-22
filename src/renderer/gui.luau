@@ -2,13 +2,12 @@ local rl = require("@raylib")
 local imgui = require("@rimgui")
 local utils = require("@utils")
 
+local enginesettings = require("../gui/enginesettings")
 local explorer = require("../gui/explorer")
 local output = require("../gui/output")
-local enginesettings = require("../gui/enginesettings")
+local properties = require("../gui/properties")
 local toolbox = require("../gui/toolbox")
 local viewport = require("../gui/viewport")
-
--- TODO: move windows to separate files for better organization
 
 local ffi = zune.ffi
 local mem = zune.mem
@@ -29,7 +28,7 @@ gui._dockBuilt = false
 gui.dockid = nil
 gui.viewport = nil
 
-local windows = {explorer, output, enginesettings, toolbox, viewport}
+local windows = {enginesettings, explorer, output, properties, toolbox, viewport}
 
 function gui.Draw()
 	gui.dockid = imgui.GetID("GuiDockspace")
@@ -73,7 +72,7 @@ function gui.Draw()
 
 			imgui.Separator()
 
-			if imgui.MenuItem("Engine Settings") == 1 then
+			if imgui.MenuItem("Engine Settings", "Alt+S") == 1 then
 				enginesettings:SetVisibility(true)
 			end
 
@@ -82,13 +81,16 @@ function gui.Draw()
 
 		imgui.EndMainMenuBar()
 	end
+
+	if rl.IsKeyDown(rl.KEY_LEFT_ALT) == 1 and rl.IsKeyPressed(rl.KEY_S) == 1 then
+		enginesettings:SetVisibility(not enginesettings:GetVisibility())
+	end
 	
 	for _, window in windows do
 		if not window.renderer then
 			window.renderer = function()
 				return gui.renderer()
 			end
-			window:SetVisibility(true)
 		end
 
 		window:Draw()

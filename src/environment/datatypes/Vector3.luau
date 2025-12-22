@@ -2,6 +2,15 @@ local Vector3 = {}
 Vector3.__index = Vector3
 Vector3.__type = "Vector3"
 
+function Vector3.__index(self, key)
+    if key == "Magnitude" then
+        local x, y, z = rawget(self, "X"), rawget(self, "Y"), rawget(self, "Z")
+        return math.sqrt(x*x + y*y + z*z)
+    end
+
+    return rawget(self, key)
+end
+
 function Vector3.new(x, y, z)
     return setmetatable({
         X = x or 0,

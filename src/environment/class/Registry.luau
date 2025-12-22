@@ -13,6 +13,14 @@ filesystem.entryloop("./src/environment/class/list", function(entry)
 	listOfClasses[returned.class] = returned
 end)
 
+function registry.getNameList()
+	local list = {}
+	for _, class in pairs(listOfClasses) do
+		table.insert(list, class.class)
+	end
+	return list
+end
+
 function registry.createclass(data)
 	listOfClasses[data.class] = data
 end

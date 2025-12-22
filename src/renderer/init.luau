@@ -2,6 +2,7 @@ local Signal = require("@signal")
 local rl = require("@raylib")
 local imgui = require("@rimgui")
 local utils = require("@utils")
+local rayutils = require("@rayutils")
 
 local gui = require("./renderer/gui")
 
@@ -69,7 +70,7 @@ local function ShouldDrawPart(part, camera, cam_pos, cam_target, cam_fovy)
 	local toPart = pos - cam_pos
 	local dist = vector.magnitude(toPart)
 
-	if dist > radius * 1000 then
+	if dist > radius * 2000 then
 		return false
 	end
 
@@ -121,6 +122,44 @@ local camera = rl.Camera3D:new({
 	fovy = camera_fovy,
 	projection = rl.CAMERA_PERSPECTIVE,
 })
+
+local function MakeMatrix(position, rotation, scale): rl.Matrix
+    scale = scale or { x = 1, y = 1, z = 1 }
+
+    local px, py, pz = position.x, position.y, position.z
+    local rx, ry, rz = rotation.x, rotation.y, rotation.z
+    local sx, sy, sz = scale.x, scale.y, scale.z
+
+    local cx, sxr = math.cos(rx), math.sin(rx)
+    local cy, syr = math.cos(ry), math.sin(ry)
+    local cz, szr = math.cos(rz), math.sin(rz)
+
+    -- Rotation matrix (Rz * Ry * Rx)
+    local r00 =  cy * cz
+    local r01 =  cy * szr
+    local r02 = -syr
+
+    local r10 = sxr * syr * cz - cx * szr
+    local r11 = sxr * syr * szr + cx * cz
+    local r12 = sxr * cy
+
+    local r20 = cx * syr * cz + sxr * szr
+    local r21 = cx * syr * szr - sxr * cz
+    local r22 = cx * cy
+
+    -- Apply scale
+    r00 *= sx; r01 *= sx; r02 *= sx
+    r10 *= sy; r11 *= sy; r12 *= sy
+    r20 *= sz; r21 *= sz; r22 *= sz
+
+    -- Build Raylib Matrix (column-major, interleaved)
+    return rl.Matrix:new({
+        m0  = r00, m4  = r01, m8  = r02, m12 = px,
+        m1  = r10, m5  = r11, m9  = r12, m13 = py,
+        m2  = r20, m6  = r21, m10 = r22, m14 = pz,
+        m3  = 0,   m7  = 0,   m11 = 0,   m15 = 1
+    })
+end
 
 local function EulerToAxisAngleRad(euler: Vector3): (vector, number)
 	local cx, sx = math.cos(euler.X / 2), math.sin(euler.X / 2)
@@ -262,17 +301,18 @@ function renderer.Render3DScene()
 	do rl.BeginMode3D(camera)
 		Skybox.Draw(camera_position)
 
-		for i, part in renderer.RenderPool3D do
-			local part = part()
+		for i, partGet in renderer.RenderPool3D do
+			local part = partGet()
 			if not part.Children or part.Destroyed then
 				table.remove(renderer.RenderPool3D, i)
 				continue
 			end
+			
+			if part.Transparency >= 1 then continue end
+			if part.Size.Magnitude <= 1e-6 then continue end
 
-			if ShouldDrawPart(part, camera, camera_position, camera_target, camera_fovy) then
-				DrawPart(part)
-				renderer.ActuallyDrawn3D += 1
-			end
+			DrawPart(part)
+			renderer.ActuallyDrawn3D += 1
 		end
 	end; rl.EndMode3D()
 

@@ -281,6 +281,10 @@ extern "C" {
         return ImGui::BeginPopupContextWindow();
     }
 
+    bool BeginPopupModal(const char* name, bool* p_open, int flags) {
+        return ImGui::BeginPopupModal(name, p_open, flags);
+    }
+
     bool Selectable(const char* text) {
         return ImGui::Selectable(text);
     }
