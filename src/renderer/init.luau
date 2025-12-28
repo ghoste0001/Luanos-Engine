@@ -327,7 +327,8 @@ function renderer.Render3DScene()
 			end
 		end
 
-		for i, partGet in transparentPool do
+		-- all the checks have been done already, just draw them
+		for _, partGet in transparentPool do
 			local part = partGet()
 			DrawPart(part)
 			renderer.ActuallyDrawn3D += 1

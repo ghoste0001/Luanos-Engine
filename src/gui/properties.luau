@@ -13,6 +13,7 @@ local ffi = zune.ffi
 local boolPtr = ffi.alloc(1)
 local numPtr = ffi.alloc(4)
 local vector3Ptr = ffi.alloc(12)
+local vector2Ptr = ffi.alloc(8)
 
 local function TextCenter(text)
 	local availRegion = imgui.FromImVec2(imgui.GetWindowSize())
@@ -70,11 +71,32 @@ local function PropertiesObject(obj)
                 print(numPtr:readf32(0))
                 t[k] = numPtr:readf32(0)
             end
+		elseif vType == "Vector2" then
+			if imgui.TreeNode(k .. ":", node_flags) == 1 then
+				vector2Ptr:writef32(0, v.X)
+				vector2Ptr:writef32(4, v.Y)
+
+				if imgui.DragFloat("X##" .. k, vector2Ptr:offset(0), 0.05, 0.0, 0.0, "%.4f", 0) == 1 and not readOnly then
+					t[k].X = vector2Ptr:readf32(0)
+				end
+
+				if imgui.DragFloat("Y##" .. k, vector2Ptr:offset(4), 0.05, 0.0, 0.0, "%.4f", 0) == 1 and not readOnly then
+					t[k].Y = vector2Ptr:readf32(4)
+				end
+
+				imgui.TreePop()
+			else
+				imgui.SameLine()
+
+				local text = "%.4f, %.4f"
+				imgui.Text(text:format(v.X, v.Y))
+			end
 		elseif vType == "Vector3" then
 			if imgui.TreeNodeEx(k .. ":", node_flags) == 1 then
 				vector3Ptr:writef32(0, v.X)
 				vector3Ptr:writef32(4, v.Y)
 				vector3Ptr:writef32(8, v.Z)
+				
 				if imgui.DragFloat("X##" .. k, vector3Ptr:offset(0), 0.05, 0.0, 0.0, "%.4f", 0) == 1 and not readOnly then
 					t[k].X = vector3Ptr:readf32(0)
 				end
@@ -87,6 +109,11 @@ local function PropertiesObject(obj)
 					t[k].Z = vector3Ptr:readf32(8)
 				end
 				imgui.TreePop()
+			else
+				imgui.SameLine()
+
+				local text = "%.4f, %.4f, %.4f"
+				imgui.Text(text:format(v.X, v.Y, v.Z))
 			end
 		elseif vType == "Color3" then
 			if imgui.TreeNodeEx(k .. ":", node_flags) == 1 then
@@ -107,6 +134,11 @@ local function PropertiesObject(obj)
 				end
 
 				imgui.TreePop()
+			else
+				imgui.SameLine()
+
+				local text = "%.4f, %.4f, %.4f"
+				imgui.Text(text:format(v.R, v.G, v.B))
 			end
 		elseif vType == "CFrame" then
 			if imgui.TreeNodeEx(k, node_flags) == 1 then
