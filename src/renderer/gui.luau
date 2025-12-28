@@ -79,6 +79,7 @@ function gui.Draw()
 		if imgui.BeginMenu("File") == 1 then
 			imgui.MenuItem("New", "Ctrl+N")
 			imgui.MenuItem("Save", "Ctrl+S")
+			imgui.MenuItem("Open", "Ctrl+O")
 			imgui.MenuItem("Save as", "Shift+Ctrl+N")
 			imgui.MenuItem("Quit", "Alt+F4")
 

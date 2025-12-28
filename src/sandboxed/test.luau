@@ -14,6 +14,7 @@ center.Shape = "Sphere"
 center.Size = Vector3.new(50, 50, 50)
 center.Name = "Center"
 center.Position = originPos
+center.Transparency = 0.5
 center.Parent = workspace
 
 local parts = 500

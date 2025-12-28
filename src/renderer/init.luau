@@ -303,6 +303,8 @@ function renderer.Render3DScene()
 	do rl.BeginMode3D(camera)
 		Skybox.Draw(camera_position)
 
+		local transparentPool = {}
+
 		for i, partGet in renderer.RenderPool3D do
 			local part = partGet()
 			if not part.Children or part.Destroyed then
@@ -315,9 +317,20 @@ function renderer.Render3DScene()
 			if part.Size.Magnitude <= 1e-6 then continue end
 
 			if ShouldDrawPart(part, camera, camera_position, camera_target, camera_fovy) then
+				if part.Transparency > 0 then
+					table.insert(transparentPool, partGet)
+					continue
+				end
+
 				DrawPart(part)
 				renderer.ActuallyDrawn3D += 1
 			end
+		end
+
+		for i, partGet in transparentPool do
+			local part = partGet()
+			DrawPart(part)
+			renderer.ActuallyDrawn3D += 1
 		end
 	end; rl.EndMode3D()
 
