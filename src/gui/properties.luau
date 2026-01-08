@@ -56,10 +56,6 @@ local function PropertiesObject(obj)
 			continue
 		end
 
-        -- zalthen: im deleting my luau formatting plugin
-        -- it makes some kinda weird decisions
-        -- (forget to remove this comment when pushing)
-
 		if vType == "boolean" then
 			boolPtr:writeu8(0, v and 1 or 0)
 			if imgui.Checkbox(k, boolPtr) == 1 and not readOnly then
