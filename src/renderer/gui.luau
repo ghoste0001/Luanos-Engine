@@ -29,18 +29,15 @@ gui.dockid = nil
 gui.viewport = nil
 
 local windows = {
-	enginesettings, 
-	explorer, 
-	output, 
-	properties, 
-	toolbox, 
-	viewport
+	enginesettings,
+	explorer,
+	output,
+	properties,
+	toolbox,
+	viewport,
 }
 
-explorer.title = "Explorer"
-output.title = "Output"
-properties.title = "Properties"
-toolbox.title = "Toolbox"
+local setStartupTheme = false
 
 function gui.Draw()
 	gui.dockid = imgui.GetID("GuiDockspace")
@@ -58,7 +55,7 @@ function gui.Draw()
 		--local dock_id_left_top, dock_id_left_bottom = DockSplit(dock_id_left, imgui.Dir.Up, 0.50)
 
 		local dock_id_right, dock_id_main = DockSplit(dock_id_main, imgui.Dir.Right, 0.2)
-		local dock_id_right_top, dock_id_right_bottom = DockSplit(dock_id_right, imgui.Dir.Up, 0.4)
+		local dock_id_right_top, dock_id_right_bottom = DockSplit(dock_id_right, imgui.Dir.Up, 0.5)
 
 		local dock_id_bottom, dock_id_main = DockSplit(dock_id_main, imgui.Dir.Down, 0.2)
 
@@ -72,6 +69,31 @@ function gui.Draw()
 
 		imgui.DockBuilderFinish(gui.dockid)
 		gui._dockBuilt = true
+	end
+
+	if not setStartupTheme then
+		local engineState = gui.renderer().EngineState
+		local config = engineState.config
+
+		local defaultTheme = config.engine.default_theme
+		if typeof(defaultTheme) == "string" then
+			local defaultThemeData = nil
+			for _, themeData in enginesettings.Themes do
+				if themeData.Name == defaultTheme then
+					defaultThemeData = themeData
+					break
+				end
+			end
+
+			if defaultThemeData then
+				enginesettings.Theme = defaultThemeData.Name
+				defaultThemeData.Function()
+			else
+				print("WARN: Default theme in engine.toml isn't a valid theme! Using ImGui Dark instead")
+			end
+		end
+
+		setStartupTheme = true
 	end
 
 	imgui.DockSpaceOverViewport(gui.dockid, gui.viewport, gui.dockFlags)
@@ -93,7 +115,9 @@ function gui.Draw()
 		end
 		if imgui.BeginMenu("View") == 1 then
 			for _, window in windows do
-				if window.title == "" then continue end
+				if window.title == "" then
+					continue
+				end
 				imgui.Checkbox(window.title, window.visible)
 			end
 			imgui.EndMenu()
@@ -104,7 +128,7 @@ function gui.Draw()
 	if rl.IsKeyDown(rl.KEY_LEFT_ALT) == 1 and rl.IsKeyPressed(rl.KEY_S) == 1 then
 		enginesettings:SetVisibility(not enginesettings:GetVisibility())
 	end
-	
+
 	for _, window in windows do
 		if not window.renderer then
 			window.renderer = function()

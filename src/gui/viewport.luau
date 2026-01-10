@@ -41,4 +41,5 @@ self = window.Create(function()
 	imgui.PopStyleVar()
 end)
 
+self.title = "Viewport"
 return self

@@ -199,4 +199,5 @@ self = window.Create(function()
 	imgui.End()
 end)
 
+self.title = "Properties"
 return self

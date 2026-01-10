@@ -148,4 +148,5 @@ self = window.Create(function()
 	imgui.End()
 end)
 
+self.title = "Explorer"
 return self

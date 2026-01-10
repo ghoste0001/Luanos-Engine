@@ -4,3 +4,6 @@
 fps = 360
 fps_unfocused = 20
 reduce_fps_on_unfocus = true
+
+[engine]
+default_theme = "Visual Studio Dark Blue"
