@@ -1,6 +1,6 @@
 local NumberSequenceKeypoint = {}
 NumberSequenceKeypoint.__index = NumberSequenceKeypoint
-NumberSequenceKeypoint.__type = NumberSequenceKeypoint
+NumberSequenceKeypoint.__type = "NumberSequenceKeypoint"
 
 function NumberSequenceKeypoint.new(...)
     local args = {...}
