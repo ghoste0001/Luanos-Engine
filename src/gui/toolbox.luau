@@ -19,4 +19,5 @@ self = window.Create(function()
 	imgui.End()
 end)
 
+self.title = "Toolbox"
 return self

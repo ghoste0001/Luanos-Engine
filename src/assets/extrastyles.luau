@@ -5,6 +5,8 @@ use ColorRGB to specify a color
 internally ImGui uses ImVec4's for color where its values range from 0 to 1
 
 use imgui.SetStyleColor(idx, ImVec4) to set a color
+
+TODO: fix ImGui erroring if two styles have the same name/creator
 ]]
 
 local function ColorRGB(r: number, g: number, b: number, a: number?)

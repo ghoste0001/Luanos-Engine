@@ -35,4 +35,5 @@ self = window.Create(function()
 	imgui.End()
 end)
 
+self.title = "Output"
 return self

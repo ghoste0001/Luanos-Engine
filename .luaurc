@@ -22,12 +22,16 @@
         "Instance": "./src/environment/class/Instance",
         "CFrame": "./src/environment/datatypes/CFrame",
         "Color3": "./src/environment/datatypes/Color3",
+		"Enum": "./src/environment/datatypes/Enum",
+		"NumberRange": "./src/environment/datatypes/NumberRange",
+		"NumberSequence": "./src/environment/datatypes/NumberSequence",
+		"NumberSequenceKeypoint": "./src/environment/datatypes/NumberSequenceKeypoint",
         "BrickColor": "./src/environment/datatypes/BrickColor/init",
         "Ray": "./src/environment/datatypes/Ray",
         "UDim": "./src/environment/datatypes/UDim",
         "UDim2": "./src/environment/datatypes/UDim2",
         "Vector2": "./src/environment/datatypes/Vector2",
-        "Vector3": "./src/environment/datatypes/Vector3",
-        "Enum": "./src/environment/datatypes/Enum"
+        "Vector3": "./src/environment/datatypes/Vector3"
+        
     }
 }

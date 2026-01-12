@@ -1,4 +1,5 @@
 local NumberRange = {}
+NumberRange.__type = "NumberRange"
 
 function NumberRange.new(...)
     local args = {...}

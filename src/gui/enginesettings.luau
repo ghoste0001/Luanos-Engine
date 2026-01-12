@@ -142,4 +142,5 @@ local defaultTheme = 1
 self.Theme = self.Themes[defaultTheme].Name
 
 self:SetVisibility(false)
+self.title = "Settings"
 return self

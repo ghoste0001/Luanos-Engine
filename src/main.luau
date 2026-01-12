@@ -39,6 +39,7 @@ local config = filesystem.readtoml("engine.toml")
 ProcessArgs(process.args)
 
 local engineState = InitializeEngine()
+engineState.config = config
 sandboxer.environment = require("./environment/datatypes/test")
 sandboxer.environment.time = rl.GetTime
 sandboxer.environment.print = function(...)

@@ -169,10 +169,19 @@ self = window.Create(function()
 				for _, className in ipairs(instance_List) do
 					if imgui.Selectable(className) == 1 then
 						local newObj = engineState.Instance.new(className)
+						
+						if className == "Part" then
+							self.renderer().AddToRenderPool3D(function()
+								return newObj
+							end)
+						end
+
 						newObj.Name = className
 						newObj.Parent = insert_Target
+
 						Selection:Remove({insert_Target})
 						Selection:Add(newObj)
+
 						insert_Target._NODE_FORCE_EXPAND = true
 					end
 				end
@@ -183,4 +192,5 @@ self = window.Create(function()
 	imgui.End()
 end)
 
+self.title = "Explorer"
 return self
