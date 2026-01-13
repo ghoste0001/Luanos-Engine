@@ -19,9 +19,6 @@ return function()
     data.settings = {
         CameraSpeed = 25,
         MouseSensitivity = 1,
-
-        MaxFPS = 120,
-        ReduceFpsWhenUnfocus = true,
     }
 
     return data

@@ -463,7 +463,7 @@ extern "C" {
     // push & pop
 
     void PushStyleColor(int style, ImVec4_FFI color) {
-        ImGui::PushStyleColor((ImGuiCol)style, ImVec4(color.x, color.y, color.z, color.w));
+        ImGui::PushStyleColor(style, ImVec4(color.x, color.y, color.z, color.w));
     }
 
     void PopStyleColor(int count) {

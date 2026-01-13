@@ -1,6 +1,8 @@
 local properties = {
     Name = "ModuleScript",
-    Source = [[print("Hello World!")]]
+    Source = [[local module = {}
+	
+return module]]
 }
 
 return {

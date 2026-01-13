@@ -1,6 +1,8 @@
 local imgui = require("@rimgui")
 local window = require("@window")
 
+local Enum = require("@Enum")
+
 local self = {}
 self = window.Create(function()
 	local engineState = self.renderer().EngineState
@@ -22,7 +24,24 @@ self = window.Create(function()
 			for i, log in logList do
 				if i >= (count - 5000) then
 					local text = ("[ %010i ]: %s"):format(log.timestamp, log.message)
+					
+					local pushedColor = false
+					if log.messageType == Enum.MessageType.MessageInfo then
+						imgui.PushStyleColor(imgui.IMGUI_COL_TEXT, imgui.NewImVec4(0, 0, 1, 1))
+						pushedColor = true
+					elseif log.messageType == Enum.MessageType.MessageWarning then
+						imgui.PushStyleColor(imgui.IMGUI_COL_TEXT, imgui.NewImVec4(1, 1, 0, 1))
+						pushedColor = true
+					elseif log.messageType == Enum.MessageType.MessageError then
+						imgui.PushStyleColor(imgui.IMGUI_COL_TEXT, imgui.NewImVec4(1, 0, 0, 1))
+						pushedColor = true
+					end
+
 					imgui.TextUnformatted(text)
+
+					if pushedColor then
+						imgui.PopStyleColor()
+					end
 				end
 			end
 

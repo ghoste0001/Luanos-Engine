@@ -3,6 +3,10 @@ local renderer = require("@renderer")
 local filesystem = require("./modules/filesystem")
 local sandboxer = require("./modules/sandboxer")
 
+_G.warn = function(...)
+	print("WARN: ", ...)
+end
+
 local InitializeEngine = require("./environment/get")
 
 local task = zune.task

@@ -185,7 +185,7 @@ local function PropertiesObject(obj)
 				end
 				imgui.TreePop()
 			end
-        elseif vType == "string" then
+        elseif vType == "string" and not readOnly then
 			-- i do obj[k] here instead of t[k] cause changes dont reflect in the explorer otherwise
 			-- (the string in _props differs from the one in the object).
 			-- u know more about how instances are supposed to be so ur prob now ;0

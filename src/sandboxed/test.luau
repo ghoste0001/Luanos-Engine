@@ -26,6 +26,9 @@ center2.Position = originPos + Vector3.new(50, 0, 0)
 center2.Transparency = 0.5
 center2.Parent = workspace
 
+print("Hello")
+warn("Hello")
+
 local parts = 500
 local mpos = 1000
 for i = 1, parts do
@@ -49,3 +52,5 @@ for i = 1, parts do
 		)
 	end)
 end
+
+error("Hello")

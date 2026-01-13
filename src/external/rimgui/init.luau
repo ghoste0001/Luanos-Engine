@@ -256,7 +256,7 @@ local defs = {
     GetID = fn(uint, {cstring}),
 
     PushStyleColor = fn(void, {int, ImVec4}),
-    PopStyleColor = fn(void, {}),
+    PopStyleColor = fn(void, {int}),
     PushStyleVarFloat = fn(void, {int, float}),
     PushStyleVarVec2 = fn(void, {int, ImVec2}),
     PopStyleVar = fn(void, {int}),
