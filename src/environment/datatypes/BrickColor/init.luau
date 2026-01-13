@@ -55,14 +55,49 @@ function BrickColor.new(...)
         local val = args[1]
         
         if type(val) == "number" then
-            
-        elseif type(val) == "string" then
-            local data = ColorMap[val]
-            if not data then
-                error(("could not find BrickColor with name '%s'!"):format(val))
-            end
+            local brickColorMap
 
-            return SetupBrickColor(val, data.id, data.color)
+			for _, map in ColorMap do
+				if map.Number == val then
+					brickColorMap = table.clone(map)
+					break
+				end
+			end
+
+			if not brickColorMap then
+				brickColorMap = {
+					Name = "Medium stone grey",
+					Number = val,
+					Color = Color3.fromRGB(163, 162, 165),
+					r = 163,
+					g = 162,
+					b = 165
+				}
+			end
+
+			return table.freeze(brickColorMap)
+        elseif type(val) == "string" then
+			local brickColorMap
+
+			for _, map in ColorMap do
+				if map.Name == val then
+					brickColorMap = table.clone(map)
+					break
+				end
+			end
+
+			if not brickColorMap then
+				brickColorMap = {
+					Name = "Medium stone grey",
+					Number = val,
+					Color = Color3.fromRGB(163, 162, 165),
+					r = 163,
+					g = 162,
+					b = 165
+				}
+			end
+
+			return table.freeze(brickColorMap)
         end
     elseif #args == 3 then
         local r = args[1]
@@ -81,35 +116,35 @@ function BrickColor.new(...)
 end
 
 function BrickColor.White()
-    return ColorMap.White
+    return BrickColor.new("White")
 end
 
 function BrickColor.Gray()
-    return ColorMap["Medium stone grey"]
+    return BrickColor.new("Medium stone grey")
 end
 
 function BrickColor.DarkGray()
-    return ColorMap["Dark gray"]
+    return BrickColor.new("Dark grey")
 end
 
 function BrickColor.Black()
-    return ColorMap.Black
+    return BrickColor.new("Black")
 end
 
 function BrickColor.Red()
-    return ColorMap["Bright red"]
+    return BrickColor.new("Bright red")
 end
 
 function BrickColor.Yellow()
-    return ColorMap["Bright yellow"]
+    return BrickColor.new("Bright yellow")
 end
 
 function BrickColor.Green()
-    return ColorMap["Bright green"]
+    return BrickColor.new("Bright green")
 end
 
 function BrickColor.Blue()
-    return ColorMap["Bright blue"]
+    return BrickColor.new("Bright blue")
 end
 
 return BrickColor
