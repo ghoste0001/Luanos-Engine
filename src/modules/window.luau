@@ -1,5 +1,5 @@
 local rl = require("@raylib")
-local imgui = require("@rimgui")
+local imgui = require("@imgui")
 local utils = require("@utils")
 
 local window = {}

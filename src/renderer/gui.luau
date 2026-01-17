@@ -1,5 +1,5 @@
 local rl = require("@raylib")
-local imgui = require("@rimgui")
+local imgui = require("@imgui")
 local utils = require("@utils")
 
 local enginesettings = require("../gui/enginesettings")
@@ -26,7 +26,7 @@ end
 
 local gui = {}
 
-gui.rounding = 4
+gui.rounding = 0
 gui.renderer = nil
 
 gui.dockFlags = bit32.bor(imgui.IMGUI_DOCKNODEFLAGS_NO_CLOSE_BUTTON)
@@ -106,9 +106,10 @@ function gui.Draw()
 		setStartupTheme = true
 	end
 
-	imgui.PushStyleVarFloat(imgui.StyleVar.DockingSeparatorSize,0)
+	--imgui.PushStyleVarFloat(imgui.StyleVar.DockingSeparatorSize, 0)
 	imgui.DockSpaceOverViewport(gui.dockid, gui.viewport, gui.dockFlags)
-	imgui.PopStyleVar()
+	--imgui.PopStyleVar()
+
 	if imgui.BeginMainMenuBar() == 1 then
 		if imgui.BeginMenu("File") == 1 then
 			imgui.MenuItem("New", "Ctrl+N")
@@ -141,11 +142,11 @@ function gui.Draw()
 		enginesettings:SetVisibility(not enginesettings:GetVisibility())
 	end
 
-	imgui.PushStyleVarFloat(imgui.StyleVar.WindowRounding, gui.rounding)
-	imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, gui.rounding)
-	imgui.PushStyleVarFloat(imgui.StyleVar.PopupRounding, gui.rounding)
-	imgui.PushStyleVarFloat(imgui.StyleVar.ChildRounding, gui.rounding)
-	imgui.PushStyleVarFloat(imgui.StyleVar.WindowBorderSize, 0)
+	--imgui.PushStyleVarFloat(imgui.StyleVar.WindowRounding, gui.rounding)
+	--imgui.PushStyleVarFloat(imgui.StyleVar.FrameRounding, gui.rounding)
+	--imgui.PushStyleVarFloat(imgui.StyleVar.PopupRounding, gui.rounding)
+	--imgui.PushStyleVarFloat(imgui.StyleVar.ChildRounding, gui.rounding)
+	--imgui.PushStyleVarFloat(imgui.StyleVar.WindowBorderSize, 1)
 	for _, window in windows do
 		if not window.renderer then
 			window.renderer = function()
@@ -154,7 +155,7 @@ function gui.Draw()
 		end
 		window:Draw()
 	end
-	imgui.PopStyleVar(5)
+	--imgui.PopStyleVar(5)
 end
 
 return gui

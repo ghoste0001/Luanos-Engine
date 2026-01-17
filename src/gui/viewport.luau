@@ -1,4 +1,4 @@
-local imgui = require("@rimgui")
+local imgui = require("@imgui")
 local rl = require("@raylib")
 local window = require("@window")
 

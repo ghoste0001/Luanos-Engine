@@ -1,6 +1,6 @@
 local Signal = require("@signal")
 local rl = require("@raylib")
-local imgui = require("@rimgui")
+local imgui = require("@imgui")
 local utils = require("@utils")
 local rayutils = require("@rayutils")
 
@@ -217,6 +217,7 @@ function renderer.DrawModel(model, part)
 	local position = vector.create(part.Position.X, part.Position.Y, part.Position.Z)
 	local scale = vector.create(part.Size.X, part.Size.Y, part.Size.Z)
 	local tint = Color3ToRaylib(part.Color, part.Transparency)
+	
 	rl.DrawModelEx(model, position, axis, angle, scale, tint)
 	if renderer.Wireframes[part] then
 		rl.DrawModelWiresEx(model, position, axis, angle, scale, rl.SKYBLUE)
@@ -336,30 +337,35 @@ end
 function renderer.OnStart(engineState)
 	renderer.EngineState = engineState
 
-	print("Creating ViewTexture")
+	print("ENGINE: INFO: Creating ViewTexture")
 	renderer.ViewTexture = rl.LoadRenderTexture(rl.GetScreenWidth(), rl.GetScreenHeight())
 	renderer.Visible = true
+	print("ENGINE: INFO: Created ViewTexture")
 
 	gui.renderer = function()
 		return renderer
 	end
 
-	imgui.rImGuiSetup()
-	imgui.rImGuiEnableDocking()
-	imgui.rImGuiDisableIO()
+	print("ENGINE: INFO: Setting up ImGui...")
+	imgui.rlImGuiSetup(true)
+	imgui.rlImGuiEnableDocking()
+	imgui.rlImGuiDisableIO()
+	print("ENGINE: INFO: Set up ImGui!")
 	Mesh.Load()
 	Skybox.Load()
 end
 
 function renderer.OnEnd()
 	if renderer.ViewTexture ~= nil then
-		print("Unloading ViewTexture")
+		print("ENGINE: INFO: Unloading ViewTexture")
 		rl.UnloadRenderTexture(renderer.ViewTexture)
+		print("ENGINE: INFO: Unloaded ViewTexture")
 	end
 
-	print("Unloading ImGui")
-	imgui.rImGuiDisableDocking()
-	imgui.rImGuiShutdown()
+	print("ENGINE: INFO: Unloading ImGui")
+	imgui.rlImGuiDisableDocking()
+	imgui.rlImGuiShutdown()
+	print("ENGINE: INFO: Unloaded ImGui")
 	
 	Mesh.Unload()
 	Skybox.Unload()
@@ -374,10 +380,10 @@ function renderer.RenderScene()
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.BLACK)
 
-		imgui.rImGuiBegin()
+		imgui.rlImGuiBegin()
 		gui.Draw()
 
-		imgui.rImGuiEnd()
+		imgui.rlImGuiEnd()
     end; rl.EndDrawing()
 
 	renderer.MainSignal:Fire("Heartbeat", delta)

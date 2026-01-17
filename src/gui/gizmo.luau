@@ -1,11 +1,12 @@
 local rl = require("@raylib")
-local gizmo = require("../external/gizmo/init")
+local rgizmo = require("@raygizmo")
 local rayutils = require("@rayutils")
 local Vector3 = require("@Vector3")
 
 local ffi = zune.ffi
 local EulerDegToQuaternion = rayutils.EulerDegToQuaternion
 local QuaternionToEulerDeg = rayutils.QuaternionToEulerDeg
+
 local LocalSpace = false
 local Move = false
 local Rotate = false
@@ -46,18 +47,18 @@ function self:Draw()
                 -- Write flags --
                 -----------------
                 if Move and not Scale then
-                    flags = bit32.bor(flags,gizmo.Flags.TRANSLATE)
+                    flags = bit32.bor(flags, rgizmo.GIZMO_TRANSLATE)
                 end
                 -----------------
                 if Rotate and not Scale then
-                    flags = bit32.bor(flags,gizmo.Flags.ROTATE)
+                    flags = bit32.bor(flags, rgizmo.GIZMO_ROTATE)
                 end
                 -----------------
                 if Scale then
                     gizmoTransform:writef32(0, objPos.X)
                     gizmoTransform:writef32(4, objPos.Y)
                     gizmoTransform:writef32(8, objPos.Z)
-                    if gizmo.DrawGizmo3D(gizmo.Flags.TRANSLATE,gizmoTransform) == 1 then
+                    if rgizmo.DrawGizmo3D(rgizmo.GIZMO_TRANSLATE,gizmoTransform) == 1 then
                         if not self._Dragging then
                             PreviousScale.x = objSize.X
                             PreviousScale.y = objSize.Y
@@ -78,7 +79,7 @@ function self:Draw()
                     if flags ~= 0 then
                         -- Switch between Local/Global space (only affects Translate (Move) afaik).
                         if LocalSpace then
-                            flags = bit32.bor(flags,gizmo.Flags.LOCAL)
+                            flags = bit32.bor(flags, rgizmo.GIZMO_LOCAL)
                         end
                         -- Write Position
                         gizmoTransform:writef32(0, objPos.X)
@@ -92,7 +93,7 @@ function self:Draw()
                         gizmoTransform:writef32(20, qz)
                         gizmoTransform:writef32(24, qw)
 
-                        gizmo.DrawGizmo3D(bit32.bor(flags),gizmoTransform)
+                        rgizmo.DrawGizmo3D(bit32.bor(flags), gizmoTransform)
 
                         -- Read Position into obj
                         objPos.X = gizmoTransform:readf32(0)

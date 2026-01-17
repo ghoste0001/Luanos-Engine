@@ -1,4 +1,4 @@
-local imgui = require("@rimgui")
+local imgui = require("@imgui")
 local window = require("@window")
 
 local height = 24
@@ -22,4 +22,6 @@ self = window.Create(function()
 
 	imgui.End()
 end)
+
+self.title = "Status Bar"
 return self

@@ -3,10 +3,12 @@
         "core": "./src/core",
         "raylib": "./src/external/raylib",
         "raykeys": "./src/external/raykeys",
-        "rimgui": "./src/external/rimgui",
+        "imgui": "./src/external/imgui",
         "signal": "./src/external/signal",
         
         "renderer": "./src/renderer/init",
+		"gizmo": "./src/gui/gizmo",
+		"raygizmo": "./src/external/raygizmo",
 
         "utils": "./src/modules/utils",
         "rayutils": "./src/modules/rayutils",

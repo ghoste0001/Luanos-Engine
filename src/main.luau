@@ -76,12 +76,16 @@ sandboxer.environment.loadstring = function(...)
 end
 
 rl.SetConfigFlags(rl.FLAG_WINDOW_RESIZABLE)
+
+print("ENGINE: INFO: Initializing window...")
 rl.InitWindow(1200, 800, "Luanos Engine")
+print("ENGINE: INFO: Initialized window!")
+
 rl.SetTargetFPS(config.window.fps)
 rl.rlSetClipPlanes(0.01, 32768)
 
 if rl.IsWindowReady() == 0 then
-	print("ERROR: Failed to initialize window, exiting")
+	print("ENGINE: ERROR: Failed to initialize window, exiting")
 	process.exit(0)
 end
 

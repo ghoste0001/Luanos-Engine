@@ -1,2 +1,8 @@
 .git/
 .vscode/
+vendor/CMakeFiles/
+vendor/cmake_install.cmake
+vendor/CMakeCache.txt
+vendor/Makefile
+vendor/CPackConfig.cmake
+vendor/CPackSourceConfig.cmake

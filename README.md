@@ -7,8 +7,10 @@
 # Dependencies
 1. [Zune](https://github.com/Scythe-Technology/zune)
 2. [Raylib](https://github.com/raysan5/raylib)
-3. [ImGui](https://github.com/ocornut/imgui)
-4. [rlImGui](https://github.com/raylib-extras/rlImGui)
+3. [raylib-gizmo](https://github.com/cloudofoz/raylib-gizmo)
+4. [ImGui](https://github.com/ocornut/imgui)
+5. [rlImGui](https://github.com/raylib-extras/rlImGui)
+6. [ImGuiColorTextEdit](https://github.com/BalazsJako/ImGuiColorTextEdit)
 
 # Running Luanos Engine
 ### Linux
@@ -17,28 +19,29 @@
 
 2. Clone the Repository
 ```bash
-git clone https://github.com/Zalthen-dev/Luanos-Engine.git
+git clone https://github.com/Zalthen-dev/Luanos-Engine.git --depth 1
 cd Luanos-Engine
 ```
 
-3. Navigate to `src/external/rimgui/src`
-
-4. Clone [imgui](https://github.com/ocornut/imgui) and [rlImGui](https://github.com/raylib-extras/rlImGui)
+3. Navigate to `vendor` folder and clone dependencies
 ```bash
-git clone https://github.com/ocornut/imgui.git
+cd vendor
+
+git clone https://github.com/raysan5/raylib.git
+git clone https://github.com/cloudofoz/raylib-gizmo.git
+git clone https://github.com/ocornut/imgui.git --branch docking
 git clone https://github.com/raylib-extras/rlImGui.git
+git clone https://github.com/BalazsJako/ImGuiColorTextEdit.git
 ```
 
-5. Compile to shared library
+4. Build the engine library
 ```bash
-g++ -shared -fPIC wrapper.cpp rlImGui/rlImGui.cpp imgui/imgui.cpp imgui/imgui_draw.cpp imgui/imgui_widgets.cpp imgui/imgui_tables.cpp imgui/imgui_demo.cpp texteditor/texteditor.h texteditor/texteditor.cpp -I. -Iimgui -IrlImGui -Iraylib/src -lraylib -o librimgui.so
+cmake --build .
 ```
-
-6. Drag `librimgui.so` into `src/external/rimgui/bin`
-
-7. Run
+5. Navigate back to engine folder and run the engine
 ```bash
-zune run game
+cd ..
+zune run engine
 ```
 ---
 ### Windows

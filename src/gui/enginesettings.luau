@@ -1,4 +1,4 @@
-local imgui = require("@rimgui")
+local imgui = require("@imgui")
 local window = require("@window")
 local utils = require("@utils")
 local extraStyles = require("../assets/extrastyles")

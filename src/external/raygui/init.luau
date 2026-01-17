@@ -1,3 +1,5 @@
+local rl = require("@raylib")
+
 local platform = zune.platform
 local ffi = zune.ffi
 
@@ -21,28 +23,6 @@ type double = number
 type uint16 = number
 type cstring = string | buffer | FFIPointer
 
-local RayRectangle = ffi.struct({
-    { x = float },
-    { y = float },
-    { width = float },
-    { height = float },
-})
-type RayRectangle = typeof(RayRectangle:new({}))
-
-local RayVector2 = ffi.struct({
-    {x = float},
-    {y = float}
-})
-type RayVector2 = typeof(RayVector2:new({}))
-
-local RayColor = ffi.struct({
-    {r = ffi.types.u8},
-    {g = ffi.types.u8},
-    {b = ffi.types.u8},
-    {a = ffi.types.u8}
-})
-type RayColor = typeof(RayColor:new({}))
-
 -- ===============================
 -- Helper
 -- ===============================
@@ -53,13 +33,13 @@ end
 -- ===============================
 -- Library location
 -- ===============================
-local libLocation = "./src/external/raygui/bin/raygui.so"
+local libLocation = "./vendor/libEngineLib.so"
 
 if platform.cpu.arch == "x86_64" then
     if platform.os == "windows" then
-        libLocation = "./src/external/raygui/bin/raygui.dll"
+        libLocation = "./vendor/libEngineLib.dll"
     elseif platform.os == "linux" then
-        libLocation = "./src/external/raygui/bin/raygui.so"
+        libLocation = "./vendor/libEngineLib.so"
     end
 end
 
@@ -83,12 +63,12 @@ type Fns = {
     GuiGetStyle: (control: int, property: int) -> int,
 
     -- Containers
-    GuiWindowBox: (bounds: RayRectangle, title: cstring) -> bool,
-    GuiGroupBox: (bounds: RayRectangle, text: cstring) -> (),
-    GuiLine: (bounds: RayRectangle, text: cstring) -> (),
-    GuiPanel: (bounds: RayRectangle, text: cstring) -> (),
+    GuiWindowBox: (bounds: rl.Rectangle, title: cstring) -> bool,
+    GuiGroupBox: (bounds: rl.Rectangle, text: cstring) -> (),
+    GuiLine: (bounds: rl.Rectangle, text: cstring) -> (),
+    GuiPanel: (bounds: rl.Rectangle, text: cstring) -> (),
     GuiScrollPanel: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         text: cstring,
         content: any,
         scroll: FFIPointer,
@@ -96,15 +76,15 @@ type Fns = {
     ) -> (),
 
     -- Basic controls
-    GuiLabel: (bounds: RayRectangle, text: cstring) -> (),
-    GuiButton: (bounds: RayRectangle, text: cstring) -> bool,
-    GuiLabelButton: (bounds: RayRectangle, text: cstring) -> bool,
-    GuiToggle: (bounds: RayRectangle, text: cstring, active: bool) -> bool,
-    GuiToggleGroup: (bounds: RayRectangle, text: cstring, active: int) -> int,
-    GuiCheckBox: (bounds: RayRectangle, text: cstring, checked: FFIPointer) -> bool,
-    GuiComboBox: (bounds: RayRectangle, text: cstring, active: FFIPointer) -> int,
+    GuiLabel: (bounds: rl.Rectangle, text: cstring) -> (),
+    GuiButton: (bounds: rl.Rectangle, text: cstring) -> bool,
+    GuiLabelButton: (bounds: rl.Rectangle, text: cstring) -> bool,
+    GuiToggle: (bounds: rl.Rectangle, text: cstring, active: bool) -> bool,
+    GuiToggleGroup: (bounds: rl.Rectangle, text: cstring, active: int) -> int,
+    GuiCheckBox: (bounds: rl.Rectangle, text: cstring, checked: FFIPointer) -> bool,
+    GuiComboBox: (bounds: rl.Rectangle, text: cstring, active: FFIPointer) -> int,
     GuiDropdownBox: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         text: cstring,
         active: FFIPointer,
         editMode: bool
@@ -112,7 +92,7 @@ type Fns = {
 
     -- Sliders / progress
     GuiSlider: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         textLeft: cstring,
         textRight: cstring,
         value: FFIPointer,
@@ -121,7 +101,7 @@ type Fns = {
     ) -> float,
 
     GuiSliderBar: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         textLeft: cstring,
         textRight: cstring,
         value: FFIPointer,
@@ -130,7 +110,7 @@ type Fns = {
     ) -> float,
 
     GuiProgressBar: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         textLeft: cstring,
         textRight: cstring,
         value: FFIPointer,
@@ -139,7 +119,7 @@ type Fns = {
     ) -> float,
 
     GuiSpinner: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         text: cstring,
         value: FFIPointer,
         minValue: int,
@@ -148,7 +128,7 @@ type Fns = {
     ) -> bool,
 
     GuiValueBox: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         text: cstring,
         value: FFIPointer,
         minValue: int,
@@ -158,7 +138,7 @@ type Fns = {
 
     -- Text input
     GuiTextBox: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         text: cstring,
         textSize: int,
         editMode: bool
@@ -166,14 +146,14 @@ type Fns = {
 
     -- Lists
     GuiListView: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         text: cstring,
         scrollIndex: FFIPointer,
         active: FFIPointer
     ) -> int,
 
     GuiListViewEx: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         text: FFIPointer,
         count: int,
         scrollIndex: FFIPointer,
@@ -182,29 +162,29 @@ type Fns = {
     ) -> int,
 
     -- Color / image
-    GuiColorPicker: (bounds: RayRectangle, text: cstring, color: FFIPointer) -> bool,
-    GuiColorPanel: (bounds: RayRectangle, text: cstring, color: FFIPointer) -> any,
-    GuiColorBarAlpha: (bounds: RayRectangle, text: cstring, alpha: FFIPointer) -> float,
-    GuiColorBarHue: (bounds: RayRectangle, text: cstring, value: FFIPointer) -> float,
+    GuiColorPicker: (bounds: rl.Rectangle, text: cstring, color: FFIPointer) -> bool,
+    GuiColorPanel: (bounds: rl.Rectangle, text: cstring, color: FFIPointer) -> any,
+    GuiColorBarAlpha: (bounds: rl.Rectangle, text: cstring, alpha: FFIPointer) -> float,
+    GuiColorBarHue: (bounds: rl.Rectangle, text: cstring, value: FFIPointer) -> float,
 
     -- Icons
     GuiIconText: (iconId: int, text: cstring) -> cstring,
     GuiSetIconScale: (scale: int) -> (),
 
     -- Tooltips & status
-    GuiStatusBar: (bounds: RayRectangle, text: cstring) -> (),
-    GuiDummyRec: (bounds: RayRectangle, text: cstring) -> (),
+    GuiStatusBar: (bounds: rl.Rectangle, text: cstring) -> (),
+    GuiDummyRec: (bounds: rl.Rectangle, text: cstring) -> (),
 
     -- Popups
     GuiMessageBox: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         title: cstring,
         message: cstring,
         buttons: cstring
     ) -> int,
 
     GuiTextInputBox: (
-        bounds: RayRectangle,
+        bounds: rl.Rectangle,
         title: cstring,
         message: cstring,
         buttons: cstring,
@@ -291,14 +271,11 @@ local lib = ffi.dlopen(libLocation, defs) :: {
 } & Fns
 
 return {
-    NewVector2 = function(x: number,y: number)
-        return RayVector2:new({x=x,y=y})
-    end,
     NewRectangle = function(x:number,y:number,width:number,height:number)
-        return RayRectangle:new({x=x,y=y,width=width,height=height})
+        return rl.Rectangle:new({x=x,y=y,width=width,height=height})
     end,
     NewColor = function(r:number,g:number,b:number,a:number)
-        return RayColor:new({r=r,g=g,b=b,a=a})
+        return rl.Color:new({r=r,g=g,b=b,a=a})
     end,
     GuiEnable           = lib.GuiEnable,
     GuiDisable          = lib.GuiDisable,

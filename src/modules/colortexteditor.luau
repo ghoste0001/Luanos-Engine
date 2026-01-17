@@ -1,4 +1,4 @@
-local imgui = require("@rimgui")
+local imgui = require("@imgui")
 
 --local ffi = zune.ffi
 local mem = zune.mem

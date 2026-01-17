@@ -1,4 +1,4 @@
-local imgui = require("@rimgui")
+local imgui = require("@imgui")
 local window = require("@window")
 local Vector3 = require("@Vector3")
 local Color3 = require("@Color3")
