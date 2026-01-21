@@ -52,10 +52,12 @@ function self:Draw()
                 end
                 -----------------
 
-                -- Write Position
-                gizmoTransform:writef32(0, objPos.X)
-                gizmoTransform:writef32(4, objPos.Y)
-                gizmoTransform:writef32(8, objPos.Z)
+                if flags ~= 0 then
+                    -- Write Position
+                    gizmoTransform:writef32(0, objPos.X)
+                    gizmoTransform:writef32(4, objPos.Y)
+                    gizmoTransform:writef32(8, objPos.Z)
+                end
 
                 if Scale then
                     gizmoTransform:writef32(28, objSize.X)
