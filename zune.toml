@@ -5,8 +5,8 @@ engine = "src/main.luau"
 detailed_error = true
 
 [runtime.luau.options]
-debug_level = 2
-optimization_level = 1
+debug_level = 1
+optimization_level = 2
 native_code_gen = true
 
 [resolvers.formatter]

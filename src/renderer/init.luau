@@ -1,5 +1,6 @@
 local Signal = require("@signal")
 local rl = require("@raylib")
+local rlextras = require("./external/raylib-extras")
 local rg = require("@raygui")
 local imgui = require("@imgui")
 local utils = require("@utils")
@@ -18,6 +19,9 @@ local EulerToAxisAngle = rayutils.EulerToAxisAngle
 local Color3ToRaylib = rayutils.Color3ToRaylib
 
 local renderer = {}
+
+-- create the frustum
+renderer.Frustum = rlextras.CreateFrustum()
 
 -- pre-create these just in case
 renderer.ViewportPosition = {
@@ -75,52 +79,6 @@ local function DrawTextOutlined(
 	rl.DrawText(text, posX + outlineSize, posY + outlineSize, fontSize, outlineColor)
 
 	rl.DrawText(text, posX, posY, fontSize, color)
-end
-
-local function ShouldDrawPart(part, camera, cam_pos, cam_target, cam_fovy)
-	local cx, cy, cz = part.Position.X, part.Position.Y, part.Position.Z
-	local pos = vector.create(cx, cy, cz)
-
-	local sx, sy, sz = part.Size.X, part.Size.Y, part.Size.Z
-	local radius = vector.magnitude(vector.create(sx, sy, sz)) * 0.5
-
-	local toPart = pos - cam_pos
-	local dist = vector.magnitude(toPart)
-
-	if dist > radius * 2000 then
-		return false
-	end
-
-	if dist < radius then
-		return true
-	end
-
-	local forward = cam_target - cam_pos
-	local fwdLen = vector.magnitude(forward)
-	if fwdLen < 0.0001 then
-		return true
-	end
-	forward = forward / fwdLen
-
-	if vector.dot(forward, toPart) <= -radius then
-		return false
-	end
-
-	local screen = rl.GetWorldToScreen(pos, camera)
-	local w = rl.GetScreenWidth()
-	local h = rl.GetScreenHeight()
-
-	if screen.x >= -radius and screen.x <= w + radius and screen.y >= -radius and screen.y <= h + radius then
-		return true
-	end
-
-	local projected_size = radius / dist * (h / math.tan(math.rad(cam_fovy * 0.5)))
-
-	if projected_size >= 1 then
-		return true
-	end
-
-	return false
 end
 
 local camera_position = vector.create(0, 2, -5)
@@ -261,6 +219,8 @@ function renderer.Render3DScene()
 	renderer.UpdateFreecam(camera, rl.GetFrameTime())
 	renderer.ActuallyDrawn3D = 0
 	do rl.BeginMode3D(camera)
+	    -- extract (update) the frustum buffer (must be inside beginmode3d)
+		rlextras.ExtractFrustum(renderer.Frustum)
 		Skybox.Draw(camera_position)
 
 		local transparentPool = {}
@@ -275,8 +235,13 @@ function renderer.Render3DScene()
 			if not utils.isFinite(part.Transparency) then continue end
 			if part.Transparency >= 1 then continue end
 			if part.Size.Magnitude <= 1e-6 then continue end
-
-			if ShouldDrawPart(part, camera, camera_position, camera_target, camera_fovy) then
+			
+			local px = part.Position.X
+			local py = part.Position.Y
+			local pz = part.Position.Z
+			
+			-- fast approximate frustum check by a sphere check as opposed to aabb (more than enough imo)
+			if rlextras.FrustumSphereInXYZ(renderer.Frustum, px, py, pz, part.Size.Magnitude) == 1 then
 				part._Culled = false
 				if part.Transparency > 0 then
 					table.insert(transparentPool, partGet)
@@ -305,8 +270,8 @@ function renderer.Render3DScene()
 				partB.Position.Z 
 			)
 
-			local partDistA = vector.magnitude(partAPos - camera_position)--rl.Vector3DistanceSqr(camera_position, partAPos)
-			local partDistB = vector.magnitude(partBPos - camera_position)--rl.Vector3DistanceSqr(camera_position, partBPos)
+			local partDistA = vector.magnitude(partAPos - camera_position)
+			local partDistB = vector.magnitude(partBPos - camera_position)
 			return partDistA > partDistB
 		end)
 
@@ -392,8 +357,6 @@ function renderer.OnEnd()
 	Skybox.Unload()
 end
 
-local rect = rl.Rectangle:new({x=200, y=200, width = 100, height = 100})
-
 function renderer.RenderScene()
 	local time = rl.GetTime()
 	local delta = rl.GetFrameTime()
@@ -408,7 +371,6 @@ function renderer.RenderScene()
 
 		imgui.rlImGuiEnd()
     end; rl.EndDrawing()
-
 	renderer.MainSignal:Fire("Heartbeat", delta)
 end
 

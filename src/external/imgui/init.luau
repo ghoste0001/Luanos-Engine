@@ -1,4 +1,5 @@
 local ffi = zune.ffi
+local engineLib = require("./enginelib")
 local platform = zune.platform
 
 local void = ffi.types.void
@@ -384,20 +385,7 @@ local defs = {
     SetStyleClassicSteamVGUI = fn(void, {}),
 }
 
-local libLocation = "./vendor/libEngineLib.so"
-if platform.cpu.arch == "x86_64" then
-    if platform.os == "windows" then
-        libLocation = "./vendor/libEngineLib.dll"
-    elseif platform.os == "linux" then
-        libLocation = "./vendor/libEngineLib.so"
-    else
-        -- other platforms
-    end
-else
-    -- other archs
-end
-
-local lib = ffi.dlopen(libLocation, defs) :: {
+local lib = ffi.dlopen(engineLib, defs) :: {
     GetSymbol: (self: FFILibrary, symbol: string) -> FFIPointer?,
 } & Fns
 

@@ -29,7 +29,7 @@ function self:Draw()
 	-- ok for some odd reason the gizmo selection behaves weirdly when the mouse is scaled
     -- make the mouse match the viewport pos/size
     rl.SetMouseOffset(-renderer.ViewportPosition.X, -renderer.ViewportPosition.Y)
-    --rl.SetMouseScale(rl.GetScreenWidth() / renderer.ViewportSize.X, rl.GetScreenHeight() / renderer.ViewportSize.Y)
+    rl.SetMouseScale(rl.GetScreenWidth() / renderer.ViewportSize.X, rl.GetScreenHeight() / renderer.ViewportSize.Y)
 
     if #selection == 1 then
         local obj = selection[1]
@@ -38,11 +38,11 @@ function self:Draw()
                 rl.BeginTextureMode(renderer.ViewTexture)
                 rl.BeginMode3D(camera)
 
-				local ray = rl.GetScreenToWorldRay(rl.GetMousePosition(), renderer.Camera)
-				local position = zune.mem.toVector3(ray, 0)
-				local direction = zune.mem.toVector3(ray, 12)
+				--local ray = rl.GetScreenToWorldRay(rl.GetMousePosition(), renderer.Camera)
+				--local position = zune.mem.toVector3(ray, 0)
+				--local direction = zune.mem.toVector3(ray, 12)
 
-				rl.DrawSphere(position + direction, 0.1, rl.GREEN)
+				--rl.DrawSphere(position + direction, 0.1, rl.GREEN)
 
                 local objPos = obj.Position
                 local objSize = obj.Size
@@ -120,7 +120,7 @@ function self:Draw()
     end
 
     rl.SetMouseOffset(0,0)
-    --rl.SetMouseScale(1,1)
+    rl.SetMouseScale(1,1)
 end
 
 -- Gizmo Set/Get functions:

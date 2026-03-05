@@ -20,12 +20,13 @@ file(GLOB imgui_texteditor_SRC      imgui_texteditor/*.cpp imgui_texteditor/*.h)
 file(GLOB imgui_colortexteditor_SRC imgui_colortexteditor/*.cpp imgui_colortexteditor/*.h)
 file(GLOB imguicolortextedit_SRC    ImGuiColorTextEdit/*.cpp ImGuiColorTextEdit/*.h)
 file(GLOB raylibgizmo_SRC           raylib-gizmo/src/*.c raylib-gizmo/src/*.h)
-file(GLOB raygui_SRC                raygui/src/*.h)
+file(GLOB raygui_SRC                raygui/*.c raygui/src/*.h)
 file(GLOB rlimgui_SRC               rlImGui/*.cpp rlImGui/*.h)
+file(GLOB raylibextras_SRC          raylib-extras/*.c raylib-extras/*.h)
 
 add_library(${PROJECT_NAME} SHARED
     wrapper_imgui.cpp
-
+    ${raylibextras_SRC}
     ${raylibgizmo_SRC}
     ${raygui_SRC}
 

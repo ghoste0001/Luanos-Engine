@@ -2931,6 +2931,7 @@ local Enum = {
         Cylinder = 2,
         Wedge = 3,
         CornerWedge = 4,
+        Torus = 5,
     }, 
 
    ParticleEmitterShape = {

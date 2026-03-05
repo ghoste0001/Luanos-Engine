@@ -1,4 +1,5 @@
 local rl = require("@raylib")
+local engineLib = require("./enginelib")
 
 local platform = zune.platform
 local ffi = zune.ffi
@@ -23,16 +24,6 @@ type cstring = string | buffer | FFIPointer
 
 local function fn(returns: any, args: { any })
     return { returns = returns, args = args }
-end
-
-local libLocation = "./vendor/libEngineLib.so"
-
-if platform.cpu.arch == "x86_64" then
-    if platform.os == "windows" then
-        libLocation = "./vendor/libEngineLib.dll"
-    elseif platform.os == "linux" then
-        libLocation = "./vendor/libEngineLib.so"
-    end
 end
 
 type Fns = {
@@ -76,7 +67,7 @@ local defs = {
     SetGizmoGlobalAxis = fn(void, { pointer, pointer, pointer }),
 }
 
-local lib = ffi.dlopen(libLocation, defs) :: {
+local lib = ffi.dlopen(engineLib, defs) :: {
     GetSymbol: (self: FFILibrary, symbol: string) -> FFIPointer?,
 } & Fns
 

@@ -5,6 +5,7 @@ type float = number
 
 local utils = {}
 local U32 = 4294967296
+local huge = math.huge
 
 function utils.AsBool(number): boolean
 	return number ~= 0
@@ -90,7 +91,7 @@ end
 
 
 function utils.isFinite(value: number)
-	return (value == value) and (math.abs(value) < math.huge)
+    return value > -huge and value < huge
 end
 
 return utils
